@@ -1,0 +1,24 @@
+(default_snippet) {
+    root /srv
+    gzip
+    templates
+}
+(proxy_snippet) {
+    proxy / https://example.com {
+        header_upstream Host example.com
+        header_upstream X-Real-IP {remote}
+        header_upstream X-Forwarded-For {remote}
+        header_upstream X-Forwarded-Port {server_port}
+        header_upstream X-Forwarded-Proto {scheme}    
+    }
+}
+(tls_snippet) {
+    tls /etc/ssl/fullchain.pem /etc/ssl/privkey.pem
+    clients /etc/ssl/origin-pull-ca.pem 
+
+}
+:2015 {
+    import default_snippet
+} 
+
+
